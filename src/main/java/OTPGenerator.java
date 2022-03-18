@@ -22,13 +22,12 @@ import java.util.Scanner;
  */
 
 public class OTPGenerator {
-    final int passwordLength = 6;
-    final TimeBasedOneTimePasswordGenerator totp;
-
-    private List<String[]> keys;
+    private final TimeBasedOneTimePasswordGenerator totp;
+    private final List<String[]> keys;
 
     public OTPGenerator() throws NoSuchAlgorithmException {
         Duration timeStep = Duration.ofSeconds(30);
+        int passwordLength = 6;
         totp = new TimeBasedOneTimePasswordGenerator(timeStep, passwordLength, TimeBasedOneTimePasswordGenerator.TOTP_ALGORITHM_HMAC_SHA1);
         keys = getKeyStrings();
     }
@@ -51,18 +50,17 @@ public class OTPGenerator {
     }
 
     private List<String[]> getKeyStrings() {
-        InputStream file = getClass().getClassLoader().getResourceAsStream("secret.keys");
-        InputStreamReader in = new InputStreamReader(file, StandardCharsets.UTF_8);
-
         List<String[]> keys = new ArrayList<>();
-
-        Scanner scanner = new Scanner(in);
-        while (scanner.hasNext()) {
-            String key = scanner.nextLine();
-            String[] splitKey = key.split(" ");
-            keys.add(splitKey);
+        InputStream file = getClass().getClassLoader().getResourceAsStream("secret.keys");
+        if (file != null) {
+            InputStreamReader in = new InputStreamReader(file, StandardCharsets.UTF_8);
+            Scanner scanner = new Scanner(in);
+            while (scanner.hasNext()) {
+                String key = scanner.nextLine();
+                String[] splitKey = key.split(" ");
+                keys.add(splitKey);
+            }
         }
-
         return keys;
     }
 
@@ -78,10 +76,5 @@ public class OTPGenerator {
         String second = totp.generateOneTimePasswordString(key, later);
 
         return (first + " " + second);
-    }
-
-    public static void main(String[] args) throws NoSuchAlgorithmException, InvalidKeyException {
-        OTPGenerator test = new OTPGenerator();
-        test.generateAllTOTP();
     }
 }
