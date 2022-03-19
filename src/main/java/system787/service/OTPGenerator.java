@@ -1,3 +1,5 @@
+package system787.service;
+
 import com.eatthepath.otp.TimeBasedOneTimePasswordGenerator;
 import org.apache.commons.codec.binary.Base32;
 
@@ -11,7 +13,6 @@ import java.time.Duration;
 import java.time.Instant;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.NoSuchElementException;
 import java.util.Scanner;
 
 /**
@@ -22,31 +23,36 @@ import java.util.Scanner;
  */
 
 public class OTPGenerator {
+    private static OTPGenerator INSTANCE = null;
+
     private final TimeBasedOneTimePasswordGenerator totp;
     private final List<String[]> keys;
+    private final Base32 base32;
 
-    public OTPGenerator() throws NoSuchAlgorithmException {
+    private static final String AES = "AES";
+
+    private OTPGenerator() throws NoSuchAlgorithmException {
         Duration timeStep = Duration.ofSeconds(30);
         int passwordLength = 6;
         totp = new TimeBasedOneTimePasswordGenerator(timeStep, passwordLength, TimeBasedOneTimePasswordGenerator.TOTP_ALGORITHM_HMAC_SHA1);
+        base32 = new Base32();
         keys = getKeyStrings();
     }
 
-    public void generateAllTOTP() {
-        if (keys.isEmpty()) {
-            throw new NoSuchElementException();
-        }
-
-        for (String[] s : keys) {
-            System.out.println(s[0] + " | Account: " + s[1]);
+    public static OTPGenerator getInstance() {
+        if (INSTANCE == null) {
             try {
-                String key = generateTOTP(s[2]);
-                String[] keySplit = key.split(" ");
-                System.out.println("Current: " + keySplit[0] + " | Next: " + keySplit[1]);
-            } catch (InvalidKeyException e) {
+                INSTANCE = new OTPGenerator();
+            } catch (NoSuchAlgorithmException e) {
                 e.printStackTrace();
+                // TODO: generate error dialogue before exiting
             }
         }
+        return INSTANCE;
+    }
+
+    public List<String[]> getAccounts() {
+        return new ArrayList<>(keys);
     }
 
     private List<String[]> getKeyStrings() {
@@ -64,17 +70,10 @@ public class OTPGenerator {
         return keys;
     }
 
-    private String generateTOTP(String keyString) throws InvalidKeyException {
-        Base32 base32 = new Base32();
+    public String getOTP(String keyString) throws InvalidKeyException {
         byte[] decoded = base32.decode(keyString);
-        Key key = new SecretKeySpec(decoded, "AES");
+        Key key = new SecretKeySpec(decoded, AES);
 
-        final Instant now = Instant.now();
-        final Instant later = now.plus(totp.getTimeStep());
-
-        String first = totp.generateOneTimePasswordString(key, now);
-        String second = totp.generateOneTimePasswordString(key, later);
-
-        return (first + " " + second);
+        return totp.generateOneTimePasswordString(key, Instant.now());
     }
 }

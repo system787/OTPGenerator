@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<form xmlns="http://www.intellij.com/uidesigner/form/" version="1" bind-to-class="system787.gui.MainView">
+  <grid id="27dc6" binding="mainPanel" layout-manager="GridLayoutManager" row-count="2" column-count="1" same-size-horizontally="false" same-size-vertically="false" hgap="-1" vgap="-1">
+    <margin top="15" left="15" bottom="15" right="15"/>
+    <constraints>
+      <xy x="20" y="20" width="665" height="871"/>
+    </constraints>
+    <properties>
+      <background color="-14671323"/>
+      <foreground color="-13684426"/>
+      <inheritsPopupMenu value="false"/>
+      <maximumSize width="450" height="800"/>
+      <minimumSize width="450" height="80"/>
+      <preferredSize width="450" height="480"/>
+    </properties>
+    <border type="none"/>
+    <children>
+      <scrollpane id="f7838" binding="passwordScrollPane">
+        <constraints>
+          <grid row="0" column="0" row-span="1" col-span="1" vsize-policy="7" hsize-policy="6" anchor="0" fill="3" indent="0" use-parent-layout="false"/>
+        </constraints>
+        <properties>
+          <background color="-13684426"/>
+          <foreground color="-13684426"/>
+          <horizontalScrollBarPolicy value="31"/>
+        </properties>
+        <border type="none"/>
+        <children>
+          <component id="233cd" class="javax.swing.JList" binding="otpListPanel">
+            <constraints/>
+            <properties>
+              <background color="-13223617"/>
+              <foreground color="-12565429"/>
+              <maximumSize width="-1" height="-1"/>
+              <minimumSize width="-1" height="-1"/>
+              <model>
+                <item value="otpListModel"/>
+              </model>
+            </properties>
+          </component>
+        </children>
+      </scrollpane>
+      <grid id="39d60" binding="bottomPanel" layout-manager="GridLayoutManager" row-count="1" column-count="1" same-size-horizontally="false" same-size-vertically="false" hgap="-1" vgap="-1">
+        <margin top="5" left="0" bottom="5" right="0"/>
+        <constraints>
+          <grid row="1" column="0" row-span="1" col-span="1" vsize-policy="2" hsize-policy="2" anchor="0" fill="3" indent="0" use-parent-layout="false">
+            <minimum-size width="-1" height="60"/>
+            <preferred-size width="-1" height="60"/>
+            <maximum-size width="-1" height="60"/>
+          </grid>
+        </constraints>
+        <properties>
+          <background color="-13223617"/>
+          <foreground color="-12565429"/>
+        </properties>
+        <border type="none"/>
+        <children/>
+      </grid>
+    </children>
+  </grid>
+</form>
