@@ -1,5 +1,8 @@
 package system787.gui;
 
+import system787.Application;
+import system787.FontSize;
+
 import javax.swing.*;
 import java.awt.*;
 
@@ -22,11 +25,10 @@ public class OTPRowView extends JPanel {
         accountLabel.setText(text);
     }
 
-    public OTPRowView() {
-        Font font = new Font("Jetbrains", Font.PLAIN, 20);
-        otpLabel.setFont(font);
-        websiteLabel.setFont(font);
-        accountLabel.setFont(font);
+    public void setCustomFont(Application context) {
+        websiteLabel.setFont(context.getFont(FontSize.M));
+        accountLabel.setFont(context.getFont(FontSize.S));
+        otpLabel.setFont(context.getFont(FontSize.L));
     }
 
     public JPanel getView() {

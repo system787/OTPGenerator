@@ -14,7 +14,7 @@ public class MainView extends JFrame {
 
     private JPanel mainPanel;
     private JScrollPane passwordScrollPane;
-    private JPanel bottomPanel;
+    private JPanel topPanel;
 
     private JList otpListPanel;
     private OTPListModel otpListModel;
@@ -24,7 +24,7 @@ public class MainView extends JFrame {
     public MainView(Application app) {
         applicationContext = app;
         accountsList = applicationContext.getAccountsList();
-        otpListCellRenderer = new OTPListCellRenderer();
+        otpListCellRenderer = new OTPListCellRenderer(applicationContext);
         setUpData();
         setUpViews();
     }

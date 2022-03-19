@@ -4,11 +4,13 @@ import system787.gui.MainView;
 import system787.service.OTPGenerator;
 import system787.service.TimeService;
 
+import javax.swing.*;
 import java.awt.*;
 import java.io.IOException;
 import java.security.InvalidKeyException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 public class Application {
 
@@ -16,20 +18,28 @@ public class Application {
     private OTPGenerator otpGenerator;
     private TimeService timeService;
     private List<String[]> accountsList;
-    private Font font;
+    private Font font_24;
+    private Font font_22;
+    private Font font_20;
+    private Font font_18;
 
     public static void main(String[] args) {
         new Application().run();
     }
 
     private void run() {
-        //JFrame.setDefaultLookAndFeelDecorated(true);
         otpGenerator = OTPGenerator.getInstance();
         timeService = TimeService.getInstance();
         accountsList = otpGenerator.getAccounts();
 
         try {
-            font = Font.createFont(Font.TRUETYPE_FONT, Application.class.getResourceAsStream("/fonts/Code-New-Roman.otf"));
+            Font font = Font.createFont(Font.TRUETYPE_FONT,
+                    Objects.requireNonNull(Application.class.getResourceAsStream("/fonts/Code-New-Roman.otf")));
+            font_24 = font.deriveFont(Font.PLAIN, 24);
+            font_22 = font.deriveFont(Font.PLAIN, 22);
+            font_20 = font.deriveFont(Font.PLAIN, 20);
+            font_18 = font.deriveFont(Font.PLAIN, 18);
+
         } catch (FontFormatException | IOException e) {
             e.printStackTrace();
         }
@@ -37,10 +47,15 @@ public class Application {
         mainView = new MainView(this);
     }
 
-    public Font getFont() {
-        return font;
+    public Font getFont(FontSize size) {
+        return switch (size) {
+            case XL -> font_24;
+            case L -> font_22;
+            case M -> font_20;
+            case S -> font_18;
+        };
     }
-    
+
     public String getOTP(String key) throws InvalidKeyException {
         return otpGenerator.getOTP(key);
     }
@@ -55,10 +70,6 @@ public class Application {
             }
         }
         return new ArrayList<>(accountsList);
-    }
-
-    private MainView getMainView() {
-        return mainView;
     }
 
     public void exit() {
