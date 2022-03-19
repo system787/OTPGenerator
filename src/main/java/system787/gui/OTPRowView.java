@@ -28,7 +28,7 @@ public class OTPRowView extends JPanel {
     public void setCustomFont(Application context) {
         websiteLabel.setFont(context.getFont(FontSize.M));
         accountLabel.setFont(context.getFont(FontSize.S));
-        otpLabel.setFont(context.getFont(FontSize.L));
+        otpLabel.setFont(context.getFont(FontSize.XL));
     }
 
     public JPanel getView() {

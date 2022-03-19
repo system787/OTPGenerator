@@ -1,10 +1,14 @@
 package system787;
 
+import com.formdev.flatlaf.FlatDarkLaf;
+import system787.flatlaf.Dark;
+import system787.gui.MainColors;
 import system787.gui.MainView;
 import system787.service.OTPGenerator;
 import system787.service.TimeService;
 
 import javax.swing.*;
+import javax.swing.plaf.ColorUIResource;
 import java.awt.*;
 import java.io.IOException;
 import java.security.InvalidKeyException;
@@ -31,6 +35,8 @@ public class Application {
         otpGenerator = OTPGenerator.getInstance();
         timeService = TimeService.getInstance();
         accountsList = otpGenerator.getAccounts();
+        FlatDarkLaf.registerCustomDefaultsSource("system787.flatlaf");
+        Dark.setup();
 
         try {
             Font font = Font.createFont(Font.TRUETYPE_FONT,
