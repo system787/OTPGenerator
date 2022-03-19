@@ -4,6 +4,7 @@ import com.formdev.flatlaf.ui.FlatScrollBarUI;
 import system787.Application;
 import system787.gui.models.OTPListCellRenderer;
 import system787.gui.models.OTPListModel;
+import system787.service.OTPAccount;
 
 import javax.swing.*;
 import javax.swing.plaf.ColorUIResource;
@@ -15,7 +16,7 @@ import java.util.List;
 
 public class MainView extends JFrame {
     private final Application applicationContext;
-    private final List<String[]> accountsList;
+    private final List<OTPAccount> accountsList;
 
     private JPanel mainPanel;
     private JScrollPane passwordScrollPane;
@@ -38,10 +39,8 @@ public class MainView extends JFrame {
 
     private void setUpData() {
         otpListModel = new OTPListModel();
-        listModel = new DefaultListModel<>();
-        for (String[] s : accountsList) {
-            otpListModel.add(s);
-            listModel.addElement(s);
+        for (OTPAccount a : accountsList) {
+            otpListModel.add(a);
         }
     }
 
@@ -49,13 +48,14 @@ public class MainView extends JFrame {
         setUpFrame();
         setScrollPane();
         setUpList();
+        setUpSettingsButton();
     }
 
     private void setUpSettingsButton() {
         settingsButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-
+                passwordScrollPane.setVisible(!passwordScrollPane.isVisible());
             }
         });
     }

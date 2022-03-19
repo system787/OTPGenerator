@@ -1,6 +1,7 @@
 package system787.gui.models;
 
 import system787.gui.OTPRowView;
+import system787.service.OTPAccount;
 
 import javax.swing.*;
 import javax.swing.event.ListDataListener;
@@ -8,16 +9,16 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class OTPListModel implements ListModel {
-    private List<String[]> otpList;
-    private List<ListDataListener> listeners;
+    private final List<OTPAccount> otpList;
+    private final List<ListDataListener> listeners;
 
     public OTPListModel() {
         otpList = new ArrayList<>();
         listeners = new ArrayList<>();
     }
 
-    public void add(String[] s) {
-        otpList.add(s);
+    public void add(OTPAccount a) {
+        otpList.add(a);
     }
 
     @Override

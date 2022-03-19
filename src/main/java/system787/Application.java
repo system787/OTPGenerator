@@ -4,6 +4,8 @@ import com.formdev.flatlaf.FlatDarkLaf;
 import system787.flatlaf.Dark;
 import system787.gui.MainColors;
 import system787.gui.MainView;
+import system787.service.DBManager;
+import system787.service.OTPAccount;
 import system787.service.OTPGenerator;
 import system787.service.TimeService;
 
@@ -19,9 +21,12 @@ import java.util.Objects;
 public class Application {
 
     private MainView mainView;
+
+    private DBManager dbManager;
     private OTPGenerator otpGenerator;
     private TimeService timeService;
-    private List<String[]> accountsList;
+
+    private List<OTPAccount> accountsList;
     private Font font_24;
     private Font font_22;
     private Font font_20;
@@ -34,7 +39,8 @@ public class Application {
     private void run() {
         otpGenerator = OTPGenerator.getInstance();
         timeService = TimeService.getInstance();
-        accountsList = otpGenerator.getAccounts();
+        dbManager = DBManager.getInstance(this);
+        accountsList = dbManager.getAllAccounts();
         FlatDarkLaf.registerCustomDefaultsSource("system787.flatlaf");
         Dark.setup();
 
@@ -66,15 +72,7 @@ public class Application {
         return otpGenerator.getOTP(key);
     }
 
-    public ArrayList<String[]> getAccountsList() {
-        ArrayList<String[]> passwordList = new ArrayList<>(accountsList);
-        for (String[] s : passwordList) {
-            try {
-                s[2] = getOTP(s[2]);
-            } catch (InvalidKeyException e) {
-                e.printStackTrace();
-            }
-        }
+    public ArrayList<OTPAccount> getAccountsList() {
         return new ArrayList<>(accountsList);
     }
 
