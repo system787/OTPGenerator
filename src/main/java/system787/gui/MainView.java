@@ -50,7 +50,9 @@ public class MainView extends JFrame {
 
     private void setUpSettingsButton() {
         settingsButton.addActionListener(e -> {
-            SettingsView view = new SettingsView(applicationContext);
+            applicationContext.getMainView().dispose();
+            new SettingsView(applicationContext);
+            setMainPanelVisible(false);
         });
     }
 
@@ -74,5 +76,9 @@ public class MainView extends JFrame {
     private void setUpList() {
         otpListPanel.setModel(otpListModel);
         otpListPanel.setCellRenderer(otpListCellRenderer);
+    }
+
+    public void setMainPanelVisible(Boolean bool) {
+        mainPanel.setVisible(bool);
     }
 }

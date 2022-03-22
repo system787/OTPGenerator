@@ -76,6 +76,10 @@ public class Application {
 
     }
 
+    public MainView getMainView() {
+        return mainView;
+    }
+
     public void addAccount(String service, String account, String key) {
         dbManager.insert(service, account, key);
     }

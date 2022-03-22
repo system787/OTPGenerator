@@ -18,12 +18,7 @@ public class SettingsListCellRenderer extends SettingsRowView implements ListCel
     public Component getListCellRendererComponent(JList list, OTPAccount acc, int index,
                                                   boolean isSelected, boolean cellHasFocus) {
         SettingsRowView settingsRowView = new SettingsRowView();
-        if (acc.getId() == -99) {
-            settingsRowView.initAdd(applicationContext);
-        } else {
-            settingsRowView.initDelete(applicationContext, acc);
-        }
-
+        settingsRowView.init(applicationContext, acc);
         return settingsRowView.getView();
     }
 }
