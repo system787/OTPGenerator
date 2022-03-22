@@ -9,7 +9,16 @@ import system787.service.OTPAccount;
 import javax.swing.*;
 import javax.swing.plaf.ColorUIResource;
 import java.awt.*;
+import java.awt.datatransfer.Clipboard;
+import java.awt.datatransfer.StringSelection;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
+import java.security.InvalidKeyException;
+import java.sql.Date;
+import java.time.Instant;
 import java.util.List;
+import java.util.Timer;
+import java.util.TimerTask;
 
 
 public class MainView extends JFrame {
@@ -26,16 +35,19 @@ public class MainView extends JFrame {
     private OTPListModel otpListModel;
     private final OTPListCellRenderer otpListCellRenderer;
 
+    private Timer timer;
+
     public MainView(Application app) {
         applicationContext = app;
         accountsList = applicationContext.getAccountsList();
         otpListCellRenderer = new OTPListCellRenderer(applicationContext);
+        timer = new Timer();
+        otpListModel = new OTPListModel();
         setUpData();
         setUpViews();
     }
 
     private void setUpData() {
-        otpListModel = new OTPListModel();
         for (OTPAccount a : accountsList) {
             otpListModel.add(a);
         }
@@ -46,24 +58,46 @@ public class MainView extends JFrame {
         setScrollPane();
         setUpList();
         setUpSettingsButton();
+        setUpProgressBar();
+    }
+
+    private void setUpProgressBar() {
+        long currentTime = Instant.now().getEpochSecond() % 30;
+        totpProgressBar.setValue((int) currentTime);
+
+        TimerTask task = new TimerTask() {
+            @Override
+            public void run() {
+                int current = totpProgressBar.getValue();
+                System.out.println(current);
+                if (current >= 30) {
+                    totpProgressBar.setValue(0);
+                    recalculateOTP();
+                } else {
+                    totpProgressBar.setValue(current + 1);
+                }
+            }
+        };
+        timer.scheduleAtFixedRate(task, Date.from(Instant.now().plusMillis(1000)), 1000);
     }
 
     private void setUpSettingsButton() {
         settingsButton.addActionListener(e -> {
             applicationContext.getMainView().dispose();
             new SettingsView(applicationContext);
-            setMainPanelVisible(false);
+            timer.cancel();
+            this.dispose();
         });
     }
 
     private void setUpFrame() {
-        JFrame frame = new JFrame("");
-        frame.setMinimumSize(new Dimension(470, 600));
-        frame.setContentPane(this.mainPanel);
-        frame.getRootPane().putClientProperty("JRootPane.titleBarBackground", MainColors.APP_COLOR_BACKGROUND);
-        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        frame.pack();
-        frame.setVisible(true);
+        this.setTitle("");
+        this.setMinimumSize(new Dimension(470, 600));
+        this.setContentPane(this.mainPanel);
+        this.getRootPane().putClientProperty("JRootPane.titleBarBackground", MainColors.APP_COLOR_BACKGROUND);
+        this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        this.pack();
+        this.setVisible(true);
     }
 
     private void setScrollPane() {
@@ -76,9 +110,36 @@ public class MainView extends JFrame {
     private void setUpList() {
         otpListPanel.setModel(otpListModel);
         otpListPanel.setCellRenderer(otpListCellRenderer);
+
+        otpListPanel.addMouseListener(new MouseAdapter() {
+            @Override
+            public void mouseClicked(MouseEvent e) {
+                super.mouseClicked(e);
+                copyToClipboard(e.getPoint());
+            }
+        });
     }
 
-    public void setMainPanelVisible(Boolean bool) {
-        mainPanel.setVisible(bool);
+    private void copyToClipboard(Point point) {
+        int index = otpListPanel.locationToIndex(point);
+        OTPAccount account = (OTPAccount) otpListPanel.getModel().getElementAt(index);
+        String otp = "";
+        try {
+            otp = applicationContext.getOTP(account.getKey());
+        } catch (InvalidKeyException e) {
+            e.printStackTrace();
+        }
+
+        if (!otp.isEmpty()) {
+            StringSelection ss = new StringSelection(otp);
+            Clipboard clipboard = Toolkit.getDefaultToolkit().getSystemClipboard();
+            clipboard.setContents(ss, null);
+        }
+    }
+
+    private void recalculateOTP() {
+        otpListModel.clear();
+        setUpData();
+        otpListPanel.updateUI();
     }
 }

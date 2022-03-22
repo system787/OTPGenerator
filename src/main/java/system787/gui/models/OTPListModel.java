@@ -21,6 +21,10 @@ public class OTPListModel implements ListModel {
         otpList.add(a);
     }
 
+    public void clear() {
+        otpList.clear();
+    }
+
     @Override
     public int getSize() {
         return otpList.size();

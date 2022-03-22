@@ -24,7 +24,6 @@ public class DBManager {
         if (INSTANCE == null) {
             INSTANCE = new DBManager(context);
         }
-
         return INSTANCE;
     }
 
@@ -44,13 +43,12 @@ public class DBManager {
         String dbUrl = "jdbc:sqlite::resource:" + context.getClass().getClassLoader().getResource(database_name) + ";";
         connection = DriverManager.getConnection(dbUrl);
         connection.setCatalog(database_name);
-
         return connection;
     }
 
     public void closeConnection() {
         try {
-            if (connection != null) {
+            if (!connection.isClosed()) {
                 connection.close();
                 connection = null;
             }
@@ -62,7 +60,7 @@ public class DBManager {
     private void createTable(Connection con) throws SQLException {
         String sql =
                 "CREATE TABLE IF NOT EXISTS " + table_name + " ("
-                        + "id INTEGER NOT NULL PRIMARY KEY, "
+                        + "id INTEGER PRIMARY KEY, "
                         + "service TEXT NOT NULL, "
                         + "account TEXT NOT NULL, "
                         + "key TEXT NOT NULL"
@@ -81,11 +79,8 @@ public class DBManager {
 
     public List<OTPAccount> getAllAccounts() {
         List<OTPAccount> accountList = new ArrayList<>();
-
         try {
-            if (connection == null) {
-                getConnection();
-            }
+            connection = getConnection();
             Statement stmt = connection.createStatement();
             String sql = "SELECT * FROM accounts_table;";
             ResultSet resultSet = stmt.executeQuery(sql);
@@ -105,21 +100,38 @@ public class DBManager {
 
     public int insert(String service, String account, String key) {
         int tableSizeAfterInsertion = -1;
-
-        try (Statement stmt = connection.createStatement()) {
-            String sql = "INSERT INTO accounts_table VALUES ("
-                    + service + ", "
-                    + account + ", "
-                    + key + ");";
+        try {
+            connection = getConnection();
+            Statement stmt = connection.createStatement();
+            String sql = "INSERT INTO accounts_table (service, account, key) VALUES ('"
+                    + service + "', '"
+                    + account + "', '"
+                    + key + "');";
             stmt.executeUpdate(sql);
 
             sql = "SELECT COUNT(DISTINCT id) AS total FROM accounts_table;";
             ResultSet result = stmt.executeQuery(sql);
-            tableSizeAfterInsertion =  result.getInt("total");
-            connection.close();
+            tableSizeAfterInsertion = result.getInt("total");
+            closeConnection();
         } catch (SQLException e) {
             e.printStackTrace();
         }
         return tableSizeAfterInsertion;
+    }
+
+    public void delete(OTPAccount account) {
+        delete(account.getId());
+    }
+
+    public void delete(int id) {
+        try {
+            connection = getConnection();
+            Statement stmt = connection.createStatement();
+            String sql = "DELETE FROM accounts_table where id = " + id + ";";
+            stmt.executeUpdate(sql);
+            closeConnection();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
     }
 }

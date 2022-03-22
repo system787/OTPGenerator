@@ -30,12 +30,15 @@
             <constraints/>
             <properties>
               <background color="-13223617"/>
+              <dragEnabled value="false"/>
               <foreground color="-12565429"/>
               <maximumSize width="-1" height="-1"/>
               <minimumSize width="-1" height="-1"/>
               <model>
                 <item value="otpListModel"/>
               </model>
+              <selectionForeground color="-10854292"/>
+              <selectionMode value="0"/>
             </properties>
           </component>
         </children>
@@ -86,7 +89,11 @@
                 <minimum-size width="-1" height="10"/>
               </grid>
             </constraints>
-            <properties/>
+            <properties>
+              <foreground color="-14057856"/>
+              <maximum value="30"/>
+              <string value=""/>
+            </properties>
           </component>
         </children>
       </grid>

@@ -5,7 +5,6 @@ import system787.FontSize;
 import system787.service.OTPAccount;
 
 import javax.swing.*;
-import java.awt.*;
 
 public class SettingsRowView extends JPanel {
     private Application context;
@@ -28,9 +27,15 @@ public class SettingsRowView extends JPanel {
 
     private void setUpButton() {
         deleteButton.addActionListener(e -> {
-            context.deleteAccount(account.getId());
-            deleteButton.setEnabled(false);
+            deleteButton();
         });
+    }
+
+    public void deleteButton() {
+        context.deleteAccount(account);
+        websiteLabel.setText("Deleted");
+        accountLabel.setText("");
+        deleteButton.setEnabled(false);
     }
 
     private void setUpViews() {
@@ -39,7 +44,6 @@ public class SettingsRowView extends JPanel {
         accountLabel.setText(account.getAccount());
         accountLabel.setFont(context.getFont(FontSize.M));
     }
-
 
     public JPanel getView() {
         return settingsRowPanel;
