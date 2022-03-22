@@ -40,7 +40,7 @@ public class DBManager {
     }
 
     private Connection getConnection() throws SQLException {
-        String dbUrl = "jdbc:sqlite::resource:" + context.getClass().getClassLoader().getResource(database_name) + ";";
+        String dbUrl = "jdbc:sqlite::resource:otp.db";
         connection = DriverManager.getConnection(dbUrl);
         connection.setCatalog(database_name);
         return connection;
