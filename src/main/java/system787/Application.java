@@ -72,6 +72,14 @@ public class Application {
         return otpGenerator.getOTP(key);
     }
 
+    public void deleteAccount(int id) {
+
+    }
+
+    public void addAccount(String service, String account, String key) {
+        dbManager.insert(service, account, key);
+    }
+
     public ArrayList<OTPAccount> getAccountsList() {
         return new ArrayList<>(accountsList);
     }

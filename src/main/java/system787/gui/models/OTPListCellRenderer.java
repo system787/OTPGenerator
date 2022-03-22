@@ -16,7 +16,8 @@ public class OTPListCellRenderer extends OTPRowView implements ListCellRenderer<
     }
 
     @Override
-    public Component getListCellRendererComponent(JList list, OTPAccount account, int index, boolean isSelected, boolean cellHasFocus) {
+    public Component getListCellRendererComponent(JList list, OTPAccount account, int index,
+                                                  boolean isSelected, boolean cellHasFocus) {
         OTPRowView rowView = new OTPRowView();
         rowView.setCustomFont(applicationContext);
         rowView.setWebsiteLabel(account.getService());

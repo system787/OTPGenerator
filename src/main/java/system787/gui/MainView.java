@@ -9,8 +9,6 @@ import system787.service.OTPAccount;
 import javax.swing.*;
 import javax.swing.plaf.ColorUIResource;
 import java.awt.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 import java.util.List;
 
 
@@ -26,7 +24,6 @@ public class MainView extends JFrame {
     private JProgressBar totpProgressBar;
     private JButton settingsButton;
     private OTPListModel otpListModel;
-    private DefaultListModel<String[]> listModel;
     private final OTPListCellRenderer otpListCellRenderer;
 
     public MainView(Application app) {
@@ -52,11 +49,8 @@ public class MainView extends JFrame {
     }
 
     private void setUpSettingsButton() {
-        settingsButton.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                passwordScrollPane.setVisible(!passwordScrollPane.isVisible());
-            }
+        settingsButton.addActionListener(e -> {
+            SettingsView view = new SettingsView(applicationContext);
         });
     }
 

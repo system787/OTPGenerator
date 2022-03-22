@@ -8,7 +8,7 @@
     <properties>
       <background color="-12565429"/>
       <foreground color="-12565429"/>
-      <maximumSize width="420" height="-1"/>
+      <maximumSize width="420" height="80"/>
       <minimumSize width="420" height="80"/>
       <preferredSize width="420" height="80"/>
     </properties>
@@ -67,7 +67,7 @@
               <grid row="0" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="2" anchor="10" fill="0" indent="0" use-parent-layout="false"/>
             </constraints>
             <properties>
-              <background color="-13223617"/>
+              <background color="-12565429"/>
               <font/>
               <foreground color="-1"/>
               <text value=""/>
@@ -78,6 +78,7 @@
               <grid row="1" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="9" fill="0" indent="0" use-parent-layout="false"/>
             </constraints>
             <properties>
+              <background color="-12565429"/>
               <font/>
               <foreground color="-1"/>
               <text value=""/>
