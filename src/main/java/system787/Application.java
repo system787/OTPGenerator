@@ -6,7 +6,6 @@ import system787.gui.MainView;
 import system787.service.DBManager;
 import system787.service.OTPAccount;
 import system787.service.OTPGenerator;
-import system787.service.TimeService;
 
 import java.awt.*;
 import java.io.IOException;
@@ -21,7 +20,6 @@ public class Application {
 
     private DBManager dbManager;
     private OTPGenerator otpGenerator;
-    private TimeService timeService;
 
     private List<OTPAccount> accountsList;
     private Font font_24;
@@ -36,7 +34,6 @@ public class Application {
 
     private void run() {
         otpGenerator = OTPGenerator.getInstance();
-        timeService = TimeService.getInstance();
         dbManager = DBManager.getInstance(this);
         accountsList = dbManager.getAllAccounts();
         FlatDarkLaf.registerCustomDefaultsSource("system787.flatlaf");

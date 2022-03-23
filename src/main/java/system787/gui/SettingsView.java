@@ -54,10 +54,6 @@ public class SettingsView extends JDialog {
         serviceLabel.setFont(context.getFont(FontSize.XS));
         accountLabel.setFont(context.getFont(FontSize.XS));
         keyLabel.setFont(context.getFont(FontSize.XS));
-
-        serviceTextField.setFont(context.getFont(FontSize.XS));
-        accountTextField.setFont(context.getFont(FontSize.XS));
-        keyTextField.setFont(context.getFont(FontSize.XS));
     }
 
     private void setUpData() {
